@@ -23,8 +23,19 @@ define two functions for constructing Gram matrix and data-adaptive basis functi
 compute coefficient vector and values of data-adaptive functions 
 
 
-## 3. improve efficiency w.r.t. numerical integration
+## 3. Improve efficiency w.r.t. numerical integration
 
+1. Consider a kernel that can write its analytic-form antiderivative,
+e.g. Wendland kernel (one-one corresponds to Sobelev H^{s})
+
+2. For Gaussian kernel, using the error function to get the (semi-) analytic form of the integral.
+
+3. Matern kernel, how to do efficient integral computation?
+
+4. New framework for fitting the derivative or the trajectory? 
+
+
+## 4. Reconstructing vector field by vRKHS or polynomial basis
 
 
 
