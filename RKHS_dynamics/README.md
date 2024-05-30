@@ -37,7 +37,7 @@ e.g. Wendland kernel (one-one corresponds to Sobelev H^{s})
 
 ## 4. Reconstructing vector field by vRKHS or polynomial basis
 
-
+1. vRKHS: recons_dynam.py  (sensentive to the choice of kernel and superparameters)
 
 
 
