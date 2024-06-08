@@ -4,6 +4,11 @@ import math
 import numpy as np
 from scipy.integrate import solve_ivp
 import matplotlib.pyplot as plt
+# Integrator keywords for solve_ivp
+integrator_keywords = {}
+integrator_keywords['rtol'] = 1e-12
+integrator_keywords['method'] = 'LSODA'
+integrator_keywords['atol'] = 1e-12
 
 # define the ODE system
 def lotkavolterra(t, x, a=0.7, b=0.007, c=1, d=0.007):
