@@ -2,7 +2,7 @@ import numpy as np
 from scipy.integrate import solve_ivp
 import sys
 from os import path
-# 把相对路径 .. 添加到pythonpath中
+# add the relative paths into pythonpath
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
 import ode_examp
@@ -42,6 +42,21 @@ def gen_observ(examp_type, paras, x0, time_interval, pts_type, pts_num, nsr, ns_
     elif examp_type == 'pendulum':
         if len(paras) != 1:
             raise ValueError('Should be one parameter!')
+        # compute a continuous solution
+        sol = solve_ivp(ode_examp.pendulum, time_interval, x0, args=(paras,), dense_output=True, **integrator_keywords)
+    elif examp_type == 'rossler':
+        if len(paras) != 3:
+            raise ValueError('Should be three parameters!')
+        # compute a continuous solution
+        sol = solve_ivp(ode_examp.rossler, time_interval, x0, args=(paras,), dense_output=True, **integrator_keywords)
+    elif examp_type == 'lorenz96':
+        if len(paras) != 2:
+            raise ValueError('Should be two parameters!')
+        if len(x0) != paras[0]:
+            raise ValueError('Dimentions are inconsistent!')
+        # compute a continuous solution
+        sol = solve_ivp(ode_examp.lorenz96, time_interval, x0, args=(paras,), dense_output=True, **integrator_keywords)
+    else:
         pass
 
     # generata noiseless/noisy observations
@@ -67,7 +82,21 @@ def gen_observ(examp_type, paras, x0, time_interval, pts_type, pts_num, nsr, ns_
         func = lambda x, y: ode_examp.lotkavolterra(T, np.array([x,y]), paras)
         D1 = map(func, X_data[0].tolist(), X_data[1].tolist())
     elif examp_type == 'lorenz63':
-        pass
+        func = lambda x, y, z: ode_examp.lorenz63(T, np.array([x,y,z]), paras)
+        D1 = map(func, X_data[0].tolist(), X_data[1].tolist(), X_data[2].tolist())
+    elif examp_type == 'pendulum':
+        func = lambda x, y: ode_examp.pendulum(T, np.array([x,y]), paras)
+        D1 = map(func, X_data[0].tolist(), X_data[1].tolist())
+    elif examp_type == 'rossler':
+        func = lambda x, y, z: ode_examp.rossler(T, np.array([x,y,z]), paras)
+        D1 = map(func, X_data[0].tolist(), X_data[1].tolist(), X_data[2].tolist())
+    elif examp_type == 'lorenz96':
+        func = lambda x: ode_examp.lorenz96(T, x, paras)
+        d = paras[0]   # dimension of the system
+        ll = []
+        for i in np.range(d):
+            ll.append(X_data[:,i])
+        D1 = map(func, ll)
     else:
         pass
 
@@ -75,8 +104,4 @@ def gen_observ(examp_type, paras, x0, time_interval, pts_type, pts_num, nsr, ns_
     Dx= D1.T
 
     return X_ns, X_data, T, Dx, sol
-
-
-
-
 

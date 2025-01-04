@@ -1,5 +1,7 @@
 #%%
 
+## Test for lotkavolterra
+
 import math
 import numpy as np
 from scipy.integrate import solve_ivp
@@ -24,8 +26,7 @@ T1 = T[1:]
 
 # fitting derivative and trajectory
 kernel_type='gauss'
-X_dot, X_fit = denoise_vrkhs(T, X_ns, kernel_type)
-
+X_dot, X_fit = denoise_vrkhs(T, X_ns, kernel_type, (0.2,))
 
 
 
@@ -86,7 +87,7 @@ plt.plot(X_fit[0], X_fit[1], '--g', label='fitted')
 plt.xlabel('prey')
 plt.ylabel('predator')
 plt.legend()
-plt.suptitle('Lotka-Volterra, true and RKHS fitting')
+plt.suptitle('Derivative, true and RKHS fitting')
 plt.tight_layout()
 
 

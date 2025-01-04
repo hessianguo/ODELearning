@@ -9,7 +9,7 @@ from scipy.special import erf
 import kernel_mat
 
 # denoise derivative function and observation data by vector-RKHS
-def denoise_vrkhs(t, X_ns, kernel_type='gauss'):
+def denoise_vrkhs(t, X_ns, kernel_type='gauss', kernel_para=(0.02,)):
     d, n1 = X_ns.shape
     n = n1 - 1
     T = t[1:]
@@ -21,12 +21,12 @@ def denoise_vrkhs(t, X_ns, kernel_type='gauss'):
     B = X1_ns - XX0    # data of x_t-x0
 
     if kernel_type == 'gauss':
-        sigma = 0.2
+        sigma = kernel_para[0]
     else:
         pass
 
     # estimate regularization parameter by L-curve
-    lamb = 1e-1
+    lamb = 1e-4
     pass
 
     # construct kernel matrices and fit derivative
