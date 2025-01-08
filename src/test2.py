@@ -16,7 +16,7 @@ x0 = [1, 1, 1]
 time_interval = [0, 20]
 pts_type = 'uniform'
 pts_num  = 2000
-nsr = 1e-2
+nsr = 5e-2
 ns_type = 'white_gauss'
 
 
@@ -26,7 +26,8 @@ T1 = T[1:]
 
 # fitting derivative and trajectory
 kernel_type='gauss'
-X_dot, X_fit = denoise_vrkhs(T, X_ns, kernel_type, (0.02,))
+X_dot, X_fit, lamb1 = denoise_vrkhs(T, X_ns, 1e-3, 'pre_select', kernel_type, (0.02,))
+# X_dot, X_fit, lamb1 = denoise_vrkhs(T, X_ns, None, 'auto', kernel_type, (0.02,))
 
 
 

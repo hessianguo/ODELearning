@@ -26,7 +26,7 @@ T1 = T[1:]
 
 # fitting derivative and trajectory
 kernel_type='gauss'
-X_dot, X_fit = denoise_vrkhs(T, X_ns, kernel_type, (0.2,))
+X_dot, X_fit, lamb1 = denoise_vrkhs(T, X_ns, 1e-4, 'pre_select', kernel_type, (0.2,))
 
 
 
