@@ -4,7 +4,7 @@
 def tikh(U, s, B, lamb):
     d, n = B.shape
     U1 = B @ U
-    s1 = 1. / (s+lamb*5)
+    s1 = 1. / (s+lamb*3)
     V_lamb = (U1*s1) @ U.T
 
     return V_lamb
