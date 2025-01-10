@@ -196,7 +196,7 @@ def lcurve(U, s, B):
     plt.title(f'L-curve corner at {reg_c**2}')
     # plt.axis(ax)  # Restore the axis
     plt.axis([ax.get_xlim()[0], ax.get_xlim()[1], ax.get_ylim()[0], ax.get_ylim()[1]])
-    plt.show()
+    # plt.show()
 
     return reg_c, rho, eta, reg_param
 
