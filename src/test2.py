@@ -17,7 +17,7 @@ time_interval = [0, 20]
 pts_type = 'uniform'
 pts_num  = 2000
 nsr = 5e-2
-ns_type = 'white_gauss'
+ns_type = 3
 
 
 # generata data
@@ -26,8 +26,8 @@ T1 = T[1:]
 
 # fitting derivative and trajectory
 kernel_type='gauss'
-X_dot, X_fit, lamb1 = denoise_vrkhs(T, X_ns, 1e-3, 'pre_select', kernel_type, (0.02,))
-# X_dot, X_fit, lamb1 = denoise_vrkhs(T, X_ns, None, 'auto', kernel_type, (0.02,))
+# X_dot, X_fit, lamb1 = denoise_vrkhs(T, X_ns, 1e-3, 'pre_select', kernel_type, (0.02,))
+X_dot, X_fit, lamb1 = denoise_vrkhs(T, X_ns, None, 'auto', kernel_type, (0.02,))
 
 
 
@@ -61,7 +61,7 @@ plt.tight_layout()
 fig = plt.figure(figsize = (10,10))
 ax = plt.axes(projection='3d')
 ax.grid()
-ax.scatter3D(X_ns[0], X_ns[1], X_ns[2], c='purple', s = 2)
+ax.scatter3D(X_ns[0], X_ns[1], X_ns[2], c='black', s = 2)
 ax.plot(X_data[0], X_data[1], X_data[2], 'g', lw=0.8)
 ax.set_xlabel('$x_1$', fontsize=20)
 ax.set_ylabel('$x_2$', fontsize=20)
@@ -88,6 +88,7 @@ plt.legend()
 plt.title('Derivative, true and RKHS fitting')
 plt.tight_layout()
 
+
 # plot true and fitted curves 
 fig = plt.figure(figsize = (24,6))
 plt.subplot(1, 3, 1)
@@ -107,15 +108,17 @@ plt.legend()
 plt.title('Trajectory, true and RKHS fitting')
 plt.tight_layout()
 
+
 fig = plt.figure(figsize = (10,10))
 ax = plt.axes(projection='3d')
 ax.grid()
-ax.scatter3D(X_ns[0], X_ns[1], X_ns[2], color='purple', s = 2)
+ax.scatter3D(X_ns[0], X_ns[1], X_ns[2], color='black', s = 2)
 ax.plot(X_fit[0], X_fit[1], X_fit[2], color='orange', lw=0.8)
 ax.set_xlabel('$x_1$', fontsize=20)
 ax.set_ylabel('$x_2$', fontsize=20)
 ax.set_zlabel('$x_3$', fontsize=20)
 ax.set_title("Lorenz63, noisy data and fitted traj", fontsize=20)
 plt.tight_layout()
+plt.show()
 
 # %%

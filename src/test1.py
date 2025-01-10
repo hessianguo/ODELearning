@@ -17,7 +17,7 @@ time_interval = [0, 20]
 pts_type = 'uniform'
 pts_num  = 1000
 nsr = 1e-2
-ns_type = 'white_gauss'
+ns_type = 2
 
 
 # generata data

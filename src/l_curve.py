@@ -130,23 +130,23 @@ def plot_lc(rho, eta, marker='-', reg_param=None):
             plt.loglog(rho, eta, marker)
         else:
             plt.loglog(rho, eta, marker)
-            plt.plot(rho[ni-1::ni], eta[ni-1::ni], 'x')
-            for k in range(ni-1, n, ni):
-                plt.text(rho[k], eta[k], str(reg_param[k]))
+            # plt.plot(rho[ni-1::ni], eta[ni-1::ni], 'x')
+            # for k in range(ni-1, n, ni):
+            #     plt.text(rho[k], eta[k], str(reg_param[k]))
     else:
         if reg_param is None:
             plt.plot(rho, eta, marker)
         else:
             plt.plot(rho, eta, marker)
-            plt.plot(rho[ni-1::ni], eta[ni-1::ni], 'x')
-            for k in range(ni-1, n, ni):
-                plt.text(rho[k], eta[k], str(reg_param[k]))
+            # plt.plot(rho[ni-1::ni], eta[ni-1::ni], 'x')
+            # for k in range(ni-1, n, ni):
+            #     plt.text(rho[k], eta[k], str(reg_param[k]))
 
     # Set the labels and title
-    plt.xlabel('Residual Norm')
-    plt.ylabel('Solution Norm')
+    plt.xlabel('Residual norm')
+    plt.ylabel('Solution norm')
     plt.title('L-curve')
-    plt.show()
+    # plt.show()
 
 
 '''
@@ -167,8 +167,8 @@ def lcurve(U, s, B):
     reg_param = np.zeros(npoints)
     eps = np.finfo(float).eps 
     smin_ratio = 1000*eps       # Smallest regularization parameter.
-    reg_param[npoints-1] = np.max([s1[n*d-1], ss[0]*smin_ratio])   # smallest value of lambda
-    ratio = (ss[0]/reg_param[npoints-1])**(1/(npoints-1)) 
+    reg_param[npoints-1] = np.max([s1[n*d-1], s1[0]*smin_ratio])   # smallest value of lambda
+    ratio = (s1[0]/reg_param[npoints-1])**(1/(npoints-1)) 
     for i in range(npoints-2,-1,-1):
         reg_param[i] = ratio*reg_param[i+1]
 
@@ -192,10 +192,10 @@ def lcurve(U, s, B):
     # Plot corner of L-curve
     plt.loglog([np.min(rho) / 100, rho_c], [eta_c, eta_c], ':r')
     plt.loglog([rho_c, rho_c], [np.min(eta) / 100, eta_c], ':r')
+    plt.loglog(rho_c, eta_c, 'rX')
     plt.title(f'L-curve corner at {reg_c**2}')
     # plt.axis(ax)  # Restore the axis
     plt.axis([ax.get_xlim()[0], ax.get_xlim()[1], ax.get_ylim()[0], ax.get_ylim()[1]])
-
     plt.show()
 
     return reg_c, rho, eta, reg_param
