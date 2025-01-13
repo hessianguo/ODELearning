@@ -67,8 +67,9 @@ def gen_observ(examp_type, paras, x0, time_interval, pts_type, pts_num, nsr, ns_
         T = np.linspace(t0, tf, n+1)
     elif pts_type == 'random':
         T = np.random.uniform(t0, tf, (n,))
+        T.sort()
         if T[0] == t0:
-                T.append(tf)
+            T.append(tf)
         else:
             tt = T.tolist()
             tt.insert(0,t0)

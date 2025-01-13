@@ -14,9 +14,10 @@ examp_type = 'lotkavolterra'
 paras = [0.7, 0.007, 1, 0.007]
 x0 = [70, 50]
 time_interval = [0, 20]
-pts_type = 'uniform'
+# pts_type = 'uniform'
+pts_type = 'random'
 pts_num  = 1000
-nsr = 1e-2
+nsr = 5e-1
 ns_type = 2
 
 
@@ -26,7 +27,8 @@ T1 = T[1:]
 
 # fitting derivative and trajectory
 kernel_type='gauss'
-X_dot, X_fit, lamb1 = denoise_vrkhs(T, X_ns, 1e-4, 'pre_select', kernel_type, (0.2,))
+# X_dot, X_fit, lamb1 = denoise_vrkhs(T, X_ns, 1e-2, 'pre_select', kernel_type, (0.2,))
+X_dot, X_fit, lamb1 = denoise_vrkhs(T, X_ns, None, 'auto', kernel_type, (0.1,))
 
 
 
