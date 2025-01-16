@@ -51,9 +51,10 @@ plt.plot(T, Dx[0], '-r', label='prey')
 plt.plot(T, Dx[1], '-g', label='predator')
 plt.legend()
 plt.xlabel('$t$', fontsize=20)
-plt.ylabel('$\dot{x}_i$', fontsize=20)
+plt.ylabel('$\\dot{x}_i$', fontsize=20)
 plt.suptitle('Lotka-Volterra system, trajectory and derivative')
 plt.tight_layout()
+plt.show()
 
 
 # plot noise observation and fitted curves
@@ -72,6 +73,7 @@ plt.ylabel('predator')
 plt.legend()
 plt.suptitle('Noisy observation and fitted curve')
 plt.tight_layout()
+plt.show()
 
 # plot true and fitted curves and derivative functions
 fig = plt.figure(figsize = (15, 6))
@@ -81,7 +83,7 @@ plt.plot(T, Dx[1], '-g', label='true derivative x2')
 plt.plot(T1, X_dot[0], '--b', label='fitted derivative x1')
 plt.plot(T1, X_dot[1], '--m', label='fitted derivative x2')
 plt.xlabel('$t$', fontsize=20)
-plt.ylabel('$\dot{x}_i$', fontsize=20)
+plt.ylabel('$\\dot{x}_i$', fontsize=20)
 plt.legend()
 plt.subplot(1, 2, 2)
 plt.plot(X_data[0], X_data[1], '-b', label='true')
@@ -91,6 +93,7 @@ plt.ylabel('predator')
 plt.legend()
 plt.suptitle('Derivative, true and RKHS fitting')
 plt.tight_layout()
+plt.show()
 
 
 # %%
