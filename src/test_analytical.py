@@ -18,7 +18,7 @@ ns_type = 2
 # generata data
 g = lambda x: np.cos(x)
 dg = lambda x: -np.sin(x)
-T = np.linspace(0, 4, pts_num)
+T = np.linspace(-0.5, 0.5, pts_num)
 X = g(T)
 X_data = np.reshape(X, (-1, pts_num))
 X_ns = add_noise(X_data, nsr, ns_type)
@@ -27,18 +27,18 @@ T1 = T[1:]
 
 
 # Compute the derivative using finite difference method
-X_dot_fd = compute_fd(X_ns, T)
+X_dot_fd = compute_fd(X_data, T)
 err_fd = compute_l2norm(X_dot_fd-Dx, T)/compute_l2norm(Dx, T)
 
 # Compute the error of the derivative using VRKHS
 kernel_type='gauss'
 #X_dot, X_fit, lamb1 = denoise_vrkhs(T, X_ns, 1e-4, 'pre_select', kernel_type, (0.2,))
-X_dot_rkhs, X_fit, lamb1 = denoise_vrkhs(T, X_ns, None, 'auto', kernel_type, (1.1,))
+X_dot_rkhs, X_fit, lamb1 = denoise_vrkhs(T, X_ns, None, 'auto', kernel_type, (0.2,))
 err_rkhs = compute_l2norm(X_dot_rkhs-Dx[1:], T[1:])/compute_l2norm(Dx[1:], T[1:])
 
 # Compute the error using TV regularization
 dt = T[1] - T[0]
-X_dot_tv = TVRegDiff(X_ns.reshape(-1), 50, 0.2, scale='large', ep=1e12, dx=dt, plotflag=0)
+X_dot_tv = TVRegDiff(X_ns.reshape(-1), 50, 1e-7, scale='small', ep=1e-6, dx=dt, plotflag=0)
 err_tv = compute_l2norm(X_dot_tv- Dx, T)/compute_l2norm(Dx, T)
 # Save the data to a .mat file
 mdic = {'x_noise': X_ns, 't': T, 'x_true': X_data, 'x_dot_true': Dx}

@@ -48,9 +48,9 @@ elseif debugflag == 2
 end
 
 %%  Total Variation Regularized Differentiation
-dxt(:,1) = TVRegDiff( x(:,1), 50, .2, [], 'small', 1e12, dt, 1, 1 );
-dxt(:,2) = TVRegDiff( x(:,2), 50, .2, [], 'small', 1e12, dt, 1, 1 );
-dxt(:,3) = TVRegDiff( x(:,3), 50, .2, [], 'small', 1e12, dt, 1, 1 );
+dxt(:,1) = TVRegDiff( x(:,1), 50, 1e-1, [], 'small', 1e-6, dt, 1, 1 );
+dxt(:,2) = TVRegDiff( x(:,2), 50, 1e-1, [], 'small', 1e-6, dt, 1, 1 );
+dxt(:,3) = TVRegDiff( x(:,3), 50, 1e-1, [], 'small', 1e-6, dt, 1, 1 );
 
 close all
 subplot(131)

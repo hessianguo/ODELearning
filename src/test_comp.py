@@ -13,8 +13,8 @@ paras = [10, 28, 8/3]
 x0 = [1, 1, 1]
 time_interval = [0, 4]
 pts_type = 'uniform'
-pts_num  = 800
-nsr = 1e-0
+pts_num  = 400
+nsr = 5e-0
 ns_type = 2
 
 
@@ -30,22 +30,20 @@ err_fd = compute_l2norm(X_dot_fd-Dx, T)/compute_l2norm(Dx, T)
 # Compute the error of the derivative using VRKHS
 kernel_type='gauss'
 #X_dot, X_fit, lamb1 = denoise_vrkhs(T, X_ns, 1e-4, 'pre_select', kernel_type, (0.2,))
-X_dot_rkhs, X_fit, lamb1 = denoise_vrkhs(T, X_ns, None, 'auto', kernel_type, (0.04,))
+X_dot_rkhs, X_fit, lamb1 = denoise_vrkhs(T, X_ns, None, 'auto', kernel_type, (0.06,))
 err_rkhs = compute_l2norm(X_dot_rkhs-Dx[:,1:], T[1:])/compute_l2norm(Dx[:,1:], T[1:])
 
 # Compute the error using TV regularization
 dt = T[1] - T[0]
-X_dot_tv_1 = TVRegDiff(X_ns[0,:], 50, 0.2, scale='large', ep=1e12, dx=dt, plotflag=0)
-X_dot_tv_2 = TVRegDiff(X_ns[1,:], 50, 0.2, scale='large', ep=1e12, dx=dt, plotflag=0)
-X_dot_tv_3 = TVRegDiff(X_ns[2,:], 50, 0.2, scale='large', ep=1e12, dx=dt, plotflag=0)
+X_dot_tv_1 = TVRegDiff(X_ns[0,:], 50, 2e-1, scale='small', ep=1e-6, dx=dt, plotflag=0)
+X_dot_tv_2 = TVRegDiff(X_ns[1,:], 50, 2e-1, scale='small', ep=1e-6, dx=dt, plotflag=0)
+X_dot_tv_3 = TVRegDiff(X_ns[2,:], 50, 2e-1, scale='small', ep=1e-6, dx=dt, plotflag=0)
 
 X_dot_tv = np.vstack((X_dot_tv_1, X_dot_tv_2, X_dot_tv_3))
 err_tv = compute_l2norm(X_dot_tv- Dx, T)/compute_l2norm(Dx, T)
 # Save the data to a .mat file
-"""
 mdic = {'x_noise': X_ns, 't': T, 'x_true': X_data, 'x_dot_true': Dx}
 savemat("tv.mat", mdic)
-"""
 
 # Print the errors
 print('Errors of fd, rkhs, tv:', err_fd, err_rkhs, err_tv)
