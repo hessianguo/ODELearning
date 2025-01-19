@@ -14,7 +14,7 @@ from tikhonov import tikh
 def denoise_vrkhs(t, X_ns, lamb, lamb_type='auto', kernel_type='gauss', kernel_para=(0.02,)):
     d, n1 = X_ns.shape
     n = n1 - 1
-    T = t[1:]
+    T = t[1:] - t[0]
     x0 = X_ns[:,0]
     X1_ns = X_ns[:,1:]
 
