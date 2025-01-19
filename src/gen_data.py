@@ -72,11 +72,13 @@ def gen_observ(examp_type, paras, x0, time_interval, pts_type, pts_num, nsr, ns_
             T.append(tf)
         else:
             tt = T.tolist()
-            tt.insert(0,t0)
             T = np.array(tt)
 
     X_data = sol.sol(T)    # noiseless observations (including the intial value at t[0])
-    X_ns = add_noise(X_data, nsr, ns_type)    # noisy observation
+    X_ns = add_noise(X_data[:,1:], nsr, ns_type)    # noisy observation
+    x0 = X_data[:,0]
+    x0 = x0[:, np.newaxis]
+    X_ns = np.hstack((x0, X_ns))
 
     # compute a continuous derivative function
     if examp_type == 'lotkavolterra':
