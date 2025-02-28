@@ -105,6 +105,11 @@ def l_corner(rho, eta, reg_param, ss, beta, M=None):
         eta_c = np.linalg.norm(f * xi)
         rho_c = np.linalg.norm((1 - f) * beta)
 
+    # print(type(reg_c))
+    # print(reg_c[0])
+    if isinstance(reg_c, np.ndarray):
+        reg_c = reg_c[0]
+    
     return reg_c, rho_c, eta_c 
 
 

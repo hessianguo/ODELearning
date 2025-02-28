@@ -18,10 +18,13 @@ def add_noise(X, nsr, type=1):
     elif type == 2:
         e = np.random.normal(scale=nsr, size=(d,n))
     elif type == 3:
-        nx = np.sqrt(np.sum(X))
+        nx = np.sqrt(np.sum(X**2))
         E1 = np.random.normal(scale=1, size=(d,n))
-        ne = np.sqrt(np.sum(E1))
-        e  = E1 / ne * nsr * nx
+        ne = np.sqrt(np.sum(E1**2))
+        if ne == 0:
+            raise ValueError("zero noise")
+        else:
+            e  = E1 / ne * nsr * nx
     else:
         pass
 

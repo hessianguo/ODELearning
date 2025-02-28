@@ -13,11 +13,12 @@ from denoise import denoise_vrkhs
 examp_type = 'lorenz63'
 paras = [10, 28, 8/3]
 x0 = [1, 1, 1]
-time_interval = [0, 20]
-pts_type = 'uniform'
-pts_num  = 2000
-nsr = 5e-2
-ns_type = 3
+time_interval = [0, 4]
+# pts_type = 'uniform'
+pts_type = 'random'
+pts_num  = 500
+nsr = 10
+ns_type = 2
 
 
 # generata data
@@ -27,7 +28,7 @@ T1 = T[1:]
 # fitting derivative and trajectory
 kernel_type='gauss'
 # X_dot, X_fit, lamb1 = denoise_vrkhs(T, X_ns, 1e-3, 'pre_select', kernel_type, (0.02,))
-X_dot, X_fit, lamb1 = denoise_vrkhs(T, X_ns, None, 'auto', kernel_type, (0.02,))
+X_dot, X_fit, lamb1 = denoise_vrkhs(T, X_ns, None, 'auto', kernel_type, (0.03,))
 
 
 
@@ -47,12 +48,12 @@ plt.ylabel('$x_i$', fontsize=20)
 # plt.savefig('predprey.png')
 plt.tight_layout()
 plt.subplot(1, 2, 2)
-plt.plot(T, Dx[0], '-r', label='$\\dot{x}_1$')
-plt.plot(T, Dx[1], '-g', label='$\\dot{x}_2$')
-plt.plot(T, Dx[2], '-b', label='$\\dot{x}_3$')
+plt.plot(T, Dx[0], '-r', label='$\dot{x}_1$')
+plt.plot(T, Dx[1], '-g', label='$\dot{x}_2$')
+plt.plot(T, Dx[2], '-b', label='$\dot{x}_3$')
 plt.legend()
 plt.xlabel('$t$', fontsize=20)
-plt.ylabel('$\\dot{x}_i$', fontsize=20)
+plt.ylabel('$\dot{x}_i$', fontsize=20)
 plt.suptitle('Lorenz 63 system, trajectory and derivative')
 plt.tight_layout()
 
@@ -83,7 +84,7 @@ plt.subplot(1, 3, 3)
 plt.plot(T, Dx[2], '-m', label='true derivative x3')
 plt.plot(T1, X_dot[2], color='deepskyblue', linestyle='--', label='fitted derivative x3')
 plt.xlabel('$t$', fontsize=20)
-plt.ylabel('$\\dot{x}_i$', fontsize=20)
+plt.ylabel('$\dot{x}_i$', fontsize=20)
 plt.legend()
 plt.title('Derivative, true and RKHS fitting')
 plt.tight_layout()

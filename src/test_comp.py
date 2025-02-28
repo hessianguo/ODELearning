@@ -1,3 +1,5 @@
+#%%
+
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.io import savemat
@@ -107,3 +109,4 @@ plt.legend()
 plt.title('Derivative, true and TVR fitting')
 plt.tight_layout()
 plt.show()
+# %%
