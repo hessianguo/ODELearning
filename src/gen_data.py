@@ -98,13 +98,16 @@ def gen_observ(examp_type, paras, x0, time_interval, pts_type, pts_num, nsr, ns_
         d = paras[0]   # dimension of the system
         ll = []
         for i in np.arange(d):
-            ll.append(X_data[:,i])
+            ll.append(X_data[i,:])
         D1 = map(func, ll)
     else:
         pass
 
     D1 = np.array(list(D1))    # (n+1)xd array
-    Dx= D1.T
+    if examp_type != 'lorenz96':
+        Dx = D1.T
+    else:
+        Dx = D1
 
     return X_ns, X_data, T, Dx, sol
 
