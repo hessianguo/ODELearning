@@ -1,6 +1,10 @@
 #%%
 
-## Test for lotkavolterra
+## Test for lotkavolterra: denoise and learning dynamcis
+# import os
+# import sys
+# path1 = os.path.abspath('..')
+# sys.path.append(path1+'/src/')
 
 import math
 import numpy as np
@@ -29,7 +33,6 @@ T1 = T[1:]
 kernel_type='gauss'
 # X_dot, X_fit, lamb1 = denoise_vrkhs(T, X_ns, 1e-2, 'pre_select', kernel_type, (0.2,))
 X_dot, X_fit, lamb1 = denoise_vrkhs(T, X_ns, None, 'auto', kernel_type, (0.3,))
-
 
 
 # ------------- plot ------------------------
@@ -91,6 +94,93 @@ plt.ylabel('predator')
 plt.legend()
 plt.suptitle('Derivative, true and RKHS fitting')
 plt.tight_layout()
+
+#------------------------------------------------------------------
+
+# learning dynamcis using {X_dot, X_fit}
+from recons_dynam import fit_coef
+from recons_dynam import vectfd
+kernel2='gauss'
+sig2 = 500
+
+V = fit_coef(X_dot, X_fit, None, 'auto','gauss', sig2)
+f_vecfd = lambda x: vectfd(x, X_fit, V, kernel2, sig2)
+# define the reconstructed ODE model
+fitODE = lambda t, x: f_vecfd(x)
+
+# ---------plot the vector field----------------
+# Creating a mesh grid for vector field
+x, y = np.meshgrid(np.linspace(0, 300, 20), np.linspace(0, 300, 20))
+# Directional vectors
+a1 = 0.7      # prey birth rate 
+a2 = 0.007    # prey-predator-collision rate
+a3 = 1        # predator death rate
+a4 = 0.007
+t0, tf = time_interval
+u = a1*x - a2*x*y
+v = -a3*x + a4*x*y
+
+def f_vf(x, y):
+   xy = np.array([x,y])
+   return f_vecfd(xy)
+
+XX = x.reshape(-1)
+YY = y.reshape(-1)
+UV1 = map(f_vf, XX.tolist(), YY.tolist())
+UV = np.array(list(UV1))
+UU = UV[:,0].reshape(20,20)
+VV = UV[:,1].reshape(20,20)
+
+# Plotting vector Field with quiver() function
+fig = plt.figure(figsize = (8, 6))
+plt.quiver(x, y, u, v, color='b')
+plt.quiver(x, y, UU, VV, color='r', linestyle='--')
+plt.title('Vector Field')
+# Setting boundary limits
+plt.xlim(0, 310)
+plt.ylim(0, 310)
+# Show plot with grid
+plt.grid()
+
+
+# prediction by solving the reconstructed ODE model
+def lotkavolterra(t, x, a=0.7, b=0.007, c=1, d=0.007):
+    x1, x2 = x
+    return [a*x1 - b*x1*x2, -c*x2 + d*x1*x2]
+
+# Integrator keywords for solve_ivp
+integrator_keywords = {}
+integrator_keywords['rtol'] = 1e-12
+integrator_keywords['method'] = 'LSODA'
+integrator_keywords['atol'] = 1e-12
+
+sol1 = solve_ivp(lotkavolterra, [t0, tf*1.5], x0, args=(a1, a2, a3, a4), dense_output=True, **integrator_keywords)
+sol2 = solve_ivp(fitODE, [t0, tf*1.5], x0, dense_output=True, **integrator_keywords)    # compute a continuous solution
+    
+tt = np.linspace(t0, tf*1.5, int(1000*1.5))
+z1 = sol1.sol(tt)    
+z2 = sol2.sol(tt) 
+
+# ------------- plot ------------------------
+fig = plt.figure(figsize = (15, 6))
+plt.subplot(1, 2, 1)
+plt.plot(tt, z1[0], '-r', label='true x1')
+plt.plot(tt, z1[1], '-g', label='true x2')
+plt.plot(tt, z2[0], '--b', label='predicted x1')
+plt.plot(tt, z2[1], '--m', label='predicted x2')
+plt.legend()
+plt.xlabel('$t$', fontsize=20)
+plt.ylabel('$x_i$', fontsize=20)
+plt.subplot(1, 2, 2)
+plt.plot(z1[0], z1[1], '-b', label='true')
+plt.plot(z2[0], z2[1], ':r', label='predicted')
+plt.xlabel('prey')
+plt.ylabel('predator')
+plt.legend()
+plt.suptitle('Lotka-Volterra, true and prediction')
+plt.tight_layout()
+
+plt.show()
 
 
 # %%

@@ -1,7 +1,5 @@
 import numpy as np
 
-
-
 def add_noise(X, nsr, type=1):
     d, n = X.shape
 

@@ -85,12 +85,12 @@ def pendulum(t, xy, para=[10]):
    g = 9.8
    alpha = g / l
    x1, x2 = xy
-   f = lambda x: 2 * np.cos(5*x1)    # external force: f(x1)=2cos(5x_1)
+   f = lambda x: np.cos(np.exp(x))    # external force
    return np.array([x2, f(x1)-alpha*np.sin(x1)])
 
 
 # define the Lorenz96 system. 
-def lorenz96(t, x, paras=[10,8]):
+def lorenz96(t, x, paras=[5,8]):
    """
     Parameters
     ----------

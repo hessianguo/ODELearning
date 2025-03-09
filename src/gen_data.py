@@ -97,7 +97,7 @@ def gen_observ(examp_type, paras, x0, time_interval, pts_type, pts_num, nsr, ns_
         func = lambda x: ode_examp.lorenz96(T, x, paras)
         d = paras[0]   # dimension of the system
         ll = []
-        for i in np.range(d):
+        for i in np.arange(d):
             ll.append(X_data[:,i])
         D1 = map(func, ll)
     else:

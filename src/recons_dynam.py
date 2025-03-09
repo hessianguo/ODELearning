@@ -33,7 +33,10 @@ def gram(X, kernel='gauss', sigma=0.2):
 
 
 # compute coeficients for RKHS regularization of f
-def fit_coef(B, G, lamb, lamb_type='auto'):
+def fit_coef(X_dot, X_dn, lamb, lamb_type='auto', kernel='gauss', sigma=0.2):
+    G = gram(X_dn, kernel, sigma)
+    B = X_dot
+
     if lamb_type == 'pre_select':
         lamb1 = lamb
         d, n = B.shape    # B = X_dot
@@ -65,9 +68,9 @@ def err_mat(x, Y):
 
 
 # recovered values of vector field f at k points X=(x1,...xk)
-def vectfd(X, X_dn, X_dot, lamb, lamb_type='auto', kernel='gauss', sigma=0.2):
-    G = gram(X_dn, kernel, sigma)
-    V = fit_coef(X_dot, G, lamb, lamb_type)
+def vectfd(X, X_dn, V, kernel='gauss', sigma=0.2):
+    if X.ndim == 1:
+        X = X.reshape((-1,1))
 
     d, n = X_dn.shape    # Y is composed of n vectors of d-dim
     if kernel == 'gauss':
@@ -78,9 +81,7 @@ def vectfd(X, X_dn, X_dot, lamb, lamb_type='auto', kernel='gauss', sigma=0.2):
     func2 = lambda x: err_mat(x, X_dn)
     E = list(map(func2, X.T.tolist()))   # list of k (n,) array
     E = np.array(E).T    # (n,k) array
-    D = func1(E)
-
-    Phi = func(D)
+    Phi = func1(E)
     f = np.matmul(V, Phi)    # (d,n)*(n,k)-->(d,k)
     if np.size(f,1) == 1:
         f = f.reshape(-1)
