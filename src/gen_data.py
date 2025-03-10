@@ -100,8 +100,8 @@ def gen_observ(examp_type, paras, x0, time_interval, pts_type, pts_num, nsr, ns_
         # for i in np.arange(d):
         #     ll.append(X_data[i,:])
         # D1 = map(func, ll)
-        func = lambda x, y, z: ode_examp.rossler(T, np.array([x,y,z]), paras)
-        D1 = map(func, X_data[0].tolist(), X_data[1].tolist(), X_data[2].tolist())
+        func = lambda x, y, z, w: ode_examp.lorenz96(T, np.array([x,y,z,w]), paras)
+        D1 = map(func, X_data[0].tolist(), X_data[1].tolist(), X_data[2].tolist(), X_data[3].tolist())
     else:
         pass
 
