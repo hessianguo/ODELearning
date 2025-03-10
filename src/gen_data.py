@@ -94,20 +94,24 @@ def gen_observ(examp_type, paras, x0, time_interval, pts_type, pts_num, nsr, ns_
         func = lambda x, y, z: ode_examp.rossler(T, np.array([x,y,z]), paras)
         D1 = map(func, X_data[0].tolist(), X_data[1].tolist(), X_data[2].tolist())
     elif examp_type == 'lorenz96':
-        func = lambda x: ode_examp.lorenz96(T, x, paras)
-        d = paras[0]   # dimension of the system
-        ll = []
-        for i in np.arange(d):
-            ll.append(X_data[i,:])
-        D1 = map(func, ll)
+        # func = lambda x: ode_examp.lorenz96(T, x, paras)
+        # d = paras[0]   # dimension of the system
+        # ll = []
+        # for i in np.arange(d):
+        #     ll.append(X_data[i,:])
+        # D1 = map(func, ll)
+        func = lambda x, y, z: ode_examp.rossler(T, np.array([x,y,z]), paras)
+        D1 = map(func, X_data[0].tolist(), X_data[1].tolist(), X_data[2].tolist())
     else:
         pass
 
     D1 = np.array(list(D1))    # (n+1)xd array
-    if examp_type != 'lorenz96':
-        Dx = D1.T
-    else:
-        Dx = D1
+    # if examp_type != 'lorenz96':
+    #     Dx = D1.T
+    # else:
+    #     Dx = D1
+
+    Dx = D1.T
 
     return X_ns, X_data, T, Dx, sol
 
