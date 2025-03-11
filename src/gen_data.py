@@ -59,8 +59,8 @@ def gen_observ(examp_type, paras, x0, time_interval, pts_type, pts_num, nsr, ns_
     else:
         pass
 
-    # generata noiseless/noisy observations
-    n = pts_num
+    # generata noiseless/noisy observations (including t=0)
+    n = pts_num - 1
     t0 = time_interval[0]
     tf = time_interval[1]
     if pts_type == 'uniform':
@@ -72,10 +72,11 @@ def gen_observ(examp_type, paras, x0, time_interval, pts_type, pts_num, nsr, ns_
             T.append(tf)
         else:
             tt = T.tolist()
-            T = np.array(tt)
+            tt.insert(0, 0) 
+            T  = np.array(tt)
 
     X_data = sol.sol(T)    # noiseless observations (including the intial value at t[0])
-    X_ns = add_noise(X_data[:,1:], nsr, ns_type)    # noisy observation
+    X_ns   = add_noise(X_data[:,1:], nsr, ns_type)    # noisy observation, excluding t[0]
     x0 = X_data[:,0]
     x0 = x0[:, np.newaxis]
     X_ns = np.hstack((x0, X_ns))
@@ -94,24 +95,19 @@ def gen_observ(examp_type, paras, x0, time_interval, pts_type, pts_num, nsr, ns_
         func = lambda x, y, z: ode_examp.rossler(T, np.array([x,y,z]), paras)
         D1 = map(func, X_data[0].tolist(), X_data[1].tolist(), X_data[2].tolist())
     elif examp_type == 'lorenz96':
-        # func = lambda x: ode_examp.lorenz96(T, x, paras)
+        func = lambda x: ode_examp.lorenz96(T, x, paras)
         # d = paras[0]   # dimension of the system
-        # ll = []
-        # for i in np.arange(d):
-        #     ll.append(X_data[i,:])
-        # D1 = map(func, ll)
-        func = lambda x, y, z, w: ode_examp.lorenz96(T, np.array([x,y,z,w]), paras)
-        D1 = map(func, X_data[0].tolist(), X_data[1].tolist(), X_data[2].tolist(), X_data[3].tolist())
+        ll = []
+        for i in np.arange(pts_num):
+            ll.append(X_data[:,i])
+        D1 = map(func, ll)
+        # func = lambda x, y, z, w: ode_examp.lorenz96(T, np.array([x,y,z,w]), paras)
+        # D1 = map(func, X_data[0].tolist(), X_data[1].tolist(), X_data[2].tolist(), X_data[3].tolist())
     else:
         pass
 
-    D1 = np.array(list(D1))    # (n+1)xd array
-    # if examp_type != 'lorenz96':
-    #     Dx = D1.T
-    # else:
-    #     Dx = D1
-
-    Dx = D1.T
+    D1 = np.array(list(D1))   
+    Dx = D1.T    # dxn array
 
     return X_ns, X_data, T, Dx, sol
 
