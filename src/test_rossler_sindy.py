@@ -52,7 +52,7 @@ coeffs[2,0] = -1
 coeffs[2,1] = paras[0]
 coeffs[3,1] = 1
 coeffs[1,2] = -paras[2]
-coeffs[8,2] = 1
+coeffs[7,2] = 1
 coeff_err = np.linalg.norm(coeffs - est_coeffs)
 print(coeffs)
 print(est_coeffs)
