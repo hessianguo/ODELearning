@@ -23,7 +23,7 @@ paras = [5, 8]
 x0 = [8.01, 8, 8, 8, 8]
 time_interval = [0, 10]
 pts_type = 'uniform'
-pts_num  = 800
+pts_num  = 8000
 nsr = 1e-1
 ns_type = 2
 
@@ -39,32 +39,34 @@ X_dot_rkhs, X_fit, lamb1 = denoise_vrkhs(T, X_ns, None, 'auto', kernel_type, (0.
 # Recovery the dynamics using sindy
 A = polynomial_basis(X_fit.T, 2)
 Xi = stsl(A, X_dot_rkhs.T, 0.1)
-print(Xi)
 
 # Compute the error of the parameters
-est_paras = np.array([Xi[1,0]])
-error = np.linalg.norm(np.array(paras) - est_paras)
+est_paras = np.array([Xi[0,0]])
+error = np.linalg.norm(np.array(paras[1]) - est_paras)
 print(error)
 
 est_coeffs = Xi
 coeffs = np.zeros_like(est_coeffs)
-coeffs[0,:] = paras[0]
+coeffs[0,:] = paras[1]
 coeffs[5,0] = -1
 coeffs[12,0] = 1
-coeffs[7,0] - -1
+coeffs[7,0] = -1
 coeffs[4,1] = -1
 coeffs[18,1] = 1
-coeffs[16,1] - -1
+coeffs[16,1] = -1
 coeffs[3,2] = -1
 coeffs[13,2] = 1
-coeffs[19,2] - -1
+coeffs[19,2] = -1
 coeffs[2,3] = -1
 coeffs[9,3] = 1
-coeffs[14,3] - -1
+coeffs[14,3] = -1
 coeffs[1,4] = -1
 coeffs[17,4] = 1
-coeffs[10,4] - -1
+coeffs[10,4] = -1
 coff_err = np.linalg.norm(coeffs - est_coeffs)
+print(coeffs)
+print(est_coeffs)
+print(coff_err)
 
 
 # Fit the ode using the estimated parameters
