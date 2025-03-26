@@ -56,6 +56,12 @@ def gen_observ(examp_type, paras, x0, time_interval, pts_type, pts_num, nsr, ns_
             raise ValueError('Dimentions are inconsistent!')
         # compute a continuous solution
         sol = solve_ivp(ode_examp.lorenz96, time_interval, x0, args=(paras,), dense_output=True, **integrator_keywords)
+    elif examp_type == 'artif':
+        sol = solve_ivp(ode_examp.artif, time_interval, x0, dense_output=True, **integrator_keywords)
+    elif examp_type == 'sir':
+        if len(paras) != 2:
+            raise ValueError('Should be two parameters!')
+        sol = solve_ivp(ode_examp.sir, time_interval, x0, args=(paras,), dense_output=True, **integrator_keywords)
     else:
         pass
 
@@ -103,6 +109,12 @@ def gen_observ(examp_type, paras, x0, time_interval, pts_type, pts_num, nsr, ns_
         D1 = map(func, ll)
         # func = lambda x, y, z, w: ode_examp.lorenz96(T, np.array([x,y,z,w]), paras)
         # D1 = map(func, X_data[0].tolist(), X_data[1].tolist(), X_data[2].tolist(), X_data[3].tolist())
+    elif examp_type == 'artif':
+        func = lambda x, y: ode_examp.artif(T, np.array([x,y]))
+        D1 = map(func, X_data[0].tolist(), X_data[1].tolist())
+    elif examp_type == 'sir':
+        func = lambda x, y, z: ode_examp.sir(T, np.array([x,y,z]), paras)
+        D1 = map(func, X_data[0].tolist(), X_data[1].tolist(), X_data[2].tolist())
     else:
         pass
 

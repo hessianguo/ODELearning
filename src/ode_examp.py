@@ -21,6 +21,24 @@ def lotkavolterra(t, xy, para=[0.7,0.007,1.0,0.007]):
    return np.array([a*x1 - b*x1*x2, -c*x2 + d*x1*x2])
 
 
+# an artificial dynamical system
+def artif(t, xy):
+   x, y = xy
+   x_dot = -np.sin(y)
+   y_dot = (-np.cos(y)+x**2) / x
+   return np.array([x_dot, y_dot])
+
+
+# define the SIR model
+def sir(t, xyz, para=[0.5,0.05]):
+   x, y, z = xyz
+   beta, gamma = para
+   x_dot = -beta*x*y / (x+y+z)
+   y_dot =  beta*x*y / (x+y+z) - gamma*y
+   z_dot = gamma*y
+   return np.array([x_dot, y_dot, z_dot])
+
+
 # define the Lorenz63 system
 def lorenz63(t, xyz, para=[10,28,8/3]):
    """
