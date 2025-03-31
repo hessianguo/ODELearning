@@ -1,2 +1,2 @@
 # ODELearning
-Learning dynamics from observations 
+Learning the governing equations from time-series data has gained increasing attention due to its potential to extract useful dynamics from real-world data. Despite significant progress, it becomes challenging when when the data is noisy, especially when derivatives need to be calculated. To reduce the effect of noise, we propose a method that can fit the derivative and trajectory simultaneously from noisy time-series data. Our approach treats derivative estimation as an inverse problem involving integral operators in the forward model and estimates the derivative function by solving a regularization problem in a vector-valued reproducing kernel Hilbert space (vRKHS).
