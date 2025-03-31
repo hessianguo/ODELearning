@@ -89,9 +89,3 @@ def vectfd(X, X_dn, V, kernel='gauss', sigma=0.2):
         f = f.reshape(-1)
 
     return f
-
-
-
-
-    
-
