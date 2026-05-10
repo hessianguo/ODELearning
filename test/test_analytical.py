@@ -17,7 +17,7 @@ from tvregdiff import TVRegDiff
 
 time_interval = [-0.5, 0.5]
 pts_type = 'uniform'
-pts_num  = 101
+pts_num  = 11
 nsr = 1e-2
 ns_type = 2
 
@@ -44,7 +44,7 @@ err_fd = compute_l2norm(X_dot_fd-Dx, T)/compute_l2norm(Dx, T)
 # Compute the error of the derivative using VRKHS
 kernel_type='gauss'
 # X_dot_rkhs, X_fit, lamb1 = denoise_vrkhs(T, X_ns, 5e-2, 'pre_select', kernel_type, (0.4,))
-X_dot_rkhs, X_fit, lamb1 = denoise_vrkhs(T, X_ns, None, 'auto', kernel_type, (0.5,))
+X_dot_rkhs, X_fit, lamb1 = denoise_vrkhs(T, X_ns, None, 'auto-qoc', kernel_type, (0.5,))
 err_rkhs = compute_l2norm(X_dot_rkhs-Dx[1:], T[1:])/compute_l2norm(Dx[1:], T[1:])
 
 # Compute the error using TV regularization

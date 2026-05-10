@@ -38,6 +38,8 @@ kernel_type='gauss'
 #X_dot_rkhs, X_fit, lamb1 = denoise_vrkhs(T, X_ns, 1e-1, 'pre_select', kernel_type, (0.04,))
 X_dot_rkhs, X_fit, lamb1 = denoise_vrkhs(T, X_ns, None, 'auto', kernel_type, (0.02,))
 err_rkhs = compute_l2norm(X_dot_rkhs-Dx[:,1:], T[1:])/compute_l2norm(Dx[:,1:], T[1:])
+X_dot_rkhs2, X_fit2, lamb2 = denoise_vrkhs(T, X_ns, None, 'auto-qoc', kernel_type, (0.02,))
+err_rkhs2 = compute_l2norm(X_dot_rkhs2-Dx[:,1:], T[1:])/compute_l2norm(Dx[:,1:], T[1:])
 
 # Compute the error using TV regularization
 #dt = T[1] - T[0]
@@ -52,7 +54,7 @@ X_dot_tv = np.vstack((X_dot_tv_1, X_dot_tv_2, X_dot_tv_3))
 err_tv = compute_l2norm(X_dot_tv[:,1:]- Dx[:,1:], T[1:])/compute_l2norm(Dx[:,1:], T[1:])
 
 # Print the errors
-print('Errors of fd, rkhs, tv:', err_fd, err_rkhs, err_tv)
+print('Errors of fd, rkhs-lc, rkhs-qoc, tv:', err_fd, err_rkhs, err_rkhs2, err_tv)
 
 
 # Saving the array
@@ -110,3 +112,4 @@ plt.ylabel('$x_1$', fontsize=10)
 filename = f"denoisedata_x_lrz_nsr_{nsr:.2e}.pdf"
 plt.savefig(filename, format="pdf", bbox_inches="tight")
 plt.show()
+# %%
